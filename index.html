@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Christian Abosede | Bioinformatician</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0d1117;
+      --bg2:       #161b22;
+      --bg3:       #1c2330;
+      --border:    #2a3444;
+      --cyan:      #39d0c8;
+      --cyan-dim:  #1e7a75;
+      --green:     #3fb950;
+      --green-dim: #1a4d24;
+      --amber:     #d29922;
+      --muted:     #6e7f96;
+      --text:      #cdd9e5;
+      --text-dim:  #8b9ab0;
+      --white:     #e6edf3;
+
+      --font-mono: 'JetBrains Mono', 'Fira Mono', monospace;
+      --font-ui:   'Inter', system-ui, sans-serif;
+
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: env(safe-area-inset-top, 0px);
+      left: 0; right: 0;
+      z-index: 100;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+    }
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      letter-spacing: 0.02em;
+    }
+    .nav-brand span { color: var(--muted); }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 2rem 4rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .hero-prompt {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--green);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hero-prompt::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    h1 {
+      font-family: var(--font-mono);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    h1 .accent { color: var(--cyan); }
+    .hero-role {
+      font-family: var(--font-mono);
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+    .hero-bio {
+      font-size: 1rem;
+      color: var(--text-dim);
+      max-width: 60ch;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      padding: 0.25rem 0.65rem;
+      border-radius: 3px;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.6rem 1.4rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: var(--cyan);
+      color: var(--bg);
+      font-weight: 700;
+    }
+    .btn-primary:hover { background: #4de8df; }
+    .btn-secondary {
+      border-color: var(--border);
+      color: var(--text-dim);
+    }
+    .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* cursor blink */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1em;
+      background: var(--cyan);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── SECTIONS ── */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.08em;
+    }
+    h2 {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      color: var(--white);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+    h3 {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--cyan);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .skill-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+    }
+    .skill-card h3 { margin-bottom: 0.75rem; }
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .skill-list li {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .skill-list li::before {
+      content: '▸';
+      color: var(--green);
+      font-size: 0.7rem;
+    }
+
+    /* ── SCRIPTS ── */
+    .scripts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .script-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .script-card:hover {
+      border-color: var(--cyan);
+      background: var(--bg3);
+    }
+    .script-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .script-name {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      font-weight: 500;
+      word-break: break-all;
+    }
+    .lang-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .lang-python  { background: #1f3a5f; color: #79b8ff; }
+    .lang-bash    { background: #1a4d24; color: var(--green); }
+    .lang-r       { background: #3b2060; color: #c9a0ff; }
+    .lang-perl    { background: #4d2a00; color: var(--amber); }
+    .lang-macro   { background: #3b2020; color: #f47067; }
+    .lang-jupyter { background: #3b2a00; color: #e3b341; }
+    .script-desc {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .script-footer {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .script-footer::before { content: '↗'; color: var(--green); }
+
+    /* placeholder card */
+    .script-card.placeholder {
+      border-style: dashed;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    /* ── PROJECTS ── */
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .project-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+    }
+    .project-link {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--cyan);
+      text-decoration: none;
+      margin-top: 0.75rem;
+      display: inline-block;
+    }
+    .project-link:hover { text-decoration: underline; }
+
+    /* ── PUBLICATIONS ── */
+    .pub-entry {
+      border-left: 2px solid var(--border);
+      padding: 0.75rem 0 0.75rem 1.25rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.15s;
+    }
+    .pub-entry:hover { border-color: var(--cyan); }
+    .pub-title {
+      font-size: 0.9rem;
+      color: var(--white);
+      font-weight: 500;
+      margin-bottom: 0.35rem;
+      line-height: 1.5;
+    }
+    .pub-authors {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 0.25rem;
+    }
+    .pub-journal {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--amber);
+    }
+    .pub-link {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+      text-decoration: none;
+      margin-left: 1rem;
+    }
+    .pub-link:hover { text-decoration: underline; }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .contact-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    .contact-value {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .contact-value:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 1rem; }
+      section { padding: 3.5rem 1.25rem; }
+      #hero { padding: 5rem 1.25rem 3rem; }
+    }
+    @media (max-width: 480px) {
+      .nav-links li:nth-child(n+4) { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cursor { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-brand"><span>~/</span>christian-abosede</div>
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#scripts">scripts</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#publications">publications</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="about" style="border-top: none;">
+    <div id="hero" style="padding: 6rem 0 4rem; max-width: none;">
+      <div class="hero-prompt">system ready — bioinformatics portfolio</div>
+      <h1>Christian<br><span class="accent">Abosede</span><span class="cursor"></span></h1>
+      <div class="hero-role">// Bioinformatician &amp; Computational Biologist</div>
+      <p class="hero-bio">
+        I work at the intersection of molecular biology and computational analysis —
+        processing NGS data, building analysis pipelines, and writing scripts that turn
+        raw sequencing reads into biological insight. My work spans RNA-seq, image analysis,
+        and structural bioinformatics.
+        <!-- ✏️ Edit this bio with your own background, institution, and focus area -->
+      </p>
+      <div class="hero-tags">
+        <span class="tag">NGS Analysis</span>
+        <span class="tag">RNA-seq</span>
+        <span class="tag">Bash Pipelines</span>
+        <span class="tag">R / Bioconductor</span>
+        <span class="tag">Python</span>
+        <span class="tag">ImageJ Macros</span>
+        <span class="tag">Structural Biology</span>
+        <span class="tag">AlphaFold2</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#scripts" class="btn btn-primary">View Scripts</a>
+        <a href="#contact" class="btn btn-secondary">Get in touch</a>
+        <!-- ✏️ Add a link to your CV PDF here when ready:
+        <a href="cv/christian-abosede-cv.pdf" class="btn btn-secondary" download>Download CV</a> -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-label">## skills</div>
+    <h2>Technical toolkit</h2>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <h3>NGS &amp; Genomics</h3>
+        <ul class="skill-list">
+          <li>RNA-seq analysis (DESeq2, edgeR)</li>
+          <li>Read alignment (STAR, HISAT2, BWA)</li>
+          <li>Variant calling (GATK, bcftools)</li>
+          <li>Quality control (FastQC, MultiQC, Trimmomatic)</li>
+          <li>Peak calling (MACS2 for ChIP/ATAC-seq)</li>
+        </ul>
+      </div>
+
+      <div class="skill-card">
+        <h3>Languages &amp; Scripting</h3>
+        <ul class="skill-list">
+          <li>Bash / Shell scripting</li>
+          <li>Python (Biopython, pandas, matplotlib)</li>
+          <li>R (ggplot2, tidyverse, Bioconductor)</li>
+          <li>Perl (sequence manipulation)</li>
+          <li>ImageJ / Fiji macro scripting</li>
+        </ul>
+      </div>
+
+      <div class="skill-card">
+        <h3>Structural Bioinformatics</h3>
+        <ul class="skill-list">
+          <li>AlphaFold2 protein structure prediction</li>
+          <li>Sequence alignment (BLAST, ClustalW)</li>
+          <li>Amino acid distribution analysis</li>
+          <li>PyMOL / structure visualisation</li>
+          <li>Molecular docking basics</li>
+        </ul>
+      </div>
+
+      <div class="skill-card">
+        <h3>Tools &amp; Environments</h3>
+        <ul class="skill-list">
+          <li>Linux HPC / SLURM clusters</li>
+          <li>Conda / virtual environments</li>
+          <li>Git &amp; GitHub</li>
+          <li>Jupyter Notebooks</li>
+          <li>Snakemake / Nextflow (learning)</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SCRIPTS -->
+  <section id="scripts">
+    <div class="section-label">## scripts</div>
+    <h2>Code library</h2>
+
+    <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-bottom: 1.5rem;">
+      # Bash pipelines — NGS analysis
+    </div>
+    <div class="scripts-grid" style="margin-bottom: 2rem;">
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/christian-abosede-bio.github.io/blob/main/scripts/umi_stranded_rnaseq_pipeline.sh"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">umi_stranded_rnaseq_pipeline.sh</div>
+          <span class="lang-badge lang-bash">Bash</span>
+        </div>
+        <div class="script-desc">
+          Full UMI-aware stranded total RNA-seq pipeline for the Takara SMARTer Pico
+          kit. Covers FastQC, fastp UMI extraction, STAR alignment, umi_tools
+          deduplication, and featureCounts with RF-strand settings.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/christian-abosede-bio.github.io/blob/main/scripts/paired_end_rnaseq_pipeline.sh"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">paired_end_rnaseq_pipeline.sh</div>
+          <span class="lang-badge lang-bash">Bash</span>
+        </div>
+        <div class="script-desc">
+          Standard paired-end RNA-seq pipeline using Trimmomatic for adapter removal,
+          STAR for splice-aware alignment, and featureCounts for gene-level
+          quantification. Parameterised for any STAR-indexed genome.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/christian-abosede-bio.github.io/blob/main/scripts/rnaseq_hisat2_star_pipeline.sh"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">rnaseq_hisat2_star_pipeline.sh</div>
+          <span class="lang-badge lang-bash">Bash</span>
+        </div>
+        <div class="script-desc">
+          Modular RNA-seq pipeline comparing two aligners (HISAT2 and STAR) and two
+          trimmers (Trimmomatic and cutadapt). Includes optional SRA download,
+          featureCounts, and HTSeq-count — uncomment the strategy you need.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/christian-abosede-bio.github.io/blob/main/scripts/merge_fastq_lanes.sh"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">merge_fastq_lanes.sh</div>
+          <span class="lang-badge lang-bash">Bash</span>
+        </div>
+        <div class="script-desc">
+          Safely concatenates paired-end FASTQ files across two sequencing lanes or
+          runs. Matches samples by name, validates all four input files exist before
+          merging, and reports any missing files clearly.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/christian-abosede-bio.github.io/blob/main/scripts/bedgraph_to_bigwig.sh"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">bedgraph_to_bigwig.sh</div>
+          <span class="lang-badge lang-bash">Bash</span>
+        </div>
+        <div class="script-desc">
+          Converts compressed bedGraph files to BigWig format for genome browser
+          visualisation (IGV, UCSC). Handles decompression, coordinate sorting, and
+          BigWig conversion in one loop.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/christian-abosede-bio.github.io/blob/main/scripts/cellranger_count_pipeline.sh"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">cellranger_count_pipeline.sh</div>
+          <span class="lang-badge lang-bash">Bash</span>
+        </div>
+        <div class="script-desc">
+          Runs the 10x Genomics Cell Ranger count pipeline for single-cell RNA-seq
+          GEX data. Includes a single-sample run and a multi-sample batch loop.
+          Outputs filtered feature-barcode matrices ready for Seurat or Scanpy.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/christian-abosede-bio.github.io/blob/main/scripts/rmats_splicing_analysis.sh"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">rmats_splicing_analysis.sh</div>
+          <span class="lang-badge lang-bash">Bash</span>
+        </div>
+        <div class="script-desc">
+          Detects differential alternative splicing events (SE, A5SS, A3SS, MXE, RI)
+          between two conditions using rMATS. Configurable for any strandedness,
+          read length, and genome annotation.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/christian-abosede-bio.github.io/blob/main/scripts/rmats2sashimiplot_visualisation.sh"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">rmats2sashimiplot_visualisation.sh</div>
+          <span class="lang-badge lang-bash">Bash</span>
+        </div>
+        <div class="script-desc">
+          Generates sashimi plots from rMATS output to visualise differential splicing
+          at specific loci. Supports all five rMATS event types, configurable scaling,
+          and optional sample grouping for colour-coded plots.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+    </div>
+
+    <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-bottom: 1.5rem;">
+      # Sequence &amp; structural biology — Python / Perl / Jupyter
+    </div>
+    <div class="scripts-grid" style="margin-bottom: 2rem;">
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/Transcription-translation/blob/main/dnatomrnaranscription.py"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">dnatomrnaranscription.py</div>
+          <span class="lang-badge lang-python">Python</span>
+        </div>
+        <div class="script-desc">
+          Converts a DNA template strand into its corresponding mRNA sequence by
+          applying complementary base-pairing rules.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/Transcription-translation/blob/main/mrna_translation.py"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">mrna_translation.py</div>
+          <span class="lang-badge lang-python">Python</span>
+        </div>
+        <div class="script-desc">
+          Translates an mRNA sequence into a protein sequence using the standard
+          genetic codon table, stopping at termination codons.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/Transcription-translation/blob/main/protein_amino_acid_distribution.py"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">protein_amino_acid_distribution.py</div>
+          <span class="lang-badge lang-python">Python</span>
+        </div>
+        <div class="script-desc">
+          Calculates and visualises amino acid composition of a protein sequence,
+          producing a frequency distribution chart for protein characterisation.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/Transcription-translation/blob/main/dnatomrnaranscription.pl"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">dnatomrnaranscription.pl</div>
+          <span class="lang-badge lang-perl">Perl</span>
+        </div>
+        <div class="script-desc">
+          Perl implementation of DNA-to-mRNA transcription, demonstrating sequence
+          processing using Perl's string manipulation.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <a class="script-card"
+         href="https://github.com/Arakunrindare/Transcription-translation/blob/main/AlphaFold2.ipynb"
+         target="_blank" rel="noopener">
+        <div class="script-header">
+          <div class="script-name">AlphaFold2.ipynb</div>
+          <span class="lang-badge lang-jupyter">Jupyter</span>
+        </div>
+        <div class="script-desc">
+          Notebook walkthrough for running AlphaFold2 protein structure predictions,
+          including model execution and pLDDT confidence score visualisation.
+        </div>
+        <div class="script-footer">View on GitHub</div>
+      </a>
+
+      <!-- R and ImageJ placeholder — replace when ready -->
+      <div class="script-card placeholder">
+        <div class="script-header">
+          <div class="script-name">deseq2_analysis.R</div>
+          <span class="lang-badge lang-r">R</span>
+        </div>
+        <div class="script-desc">Coming soon — DESeq2 differential expression script.</div>
+      </div>
+
+      <div class="script-card placeholder">
+        <div class="script-header">
+          <div class="script-name">fiji_macro.ijm</div>
+          <span class="lang-badge lang-macro">ImageJ</span>
+        </div>
+        <div class="script-desc">Coming soon — imaging analysis macro.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-label">## projects</div>
+    <h2>Research &amp; projects</h2>
+
+    <!-- Transcription / Translation repo -->
+    <div class="project-card">
+      <div class="project-meta">Python · Perl · Jupyter — github.com/Arakunrindare</div>
+      <h3>Transcription &amp; Translation Scripts</h3>
+      <p class="project-desc">
+        A collection of scripts modelling core molecular biology processes — DNA-to-mRNA
+        transcription, mRNA translation to protein, amino acid distribution analysis,
+        and AlphaFold2-based structure prediction. Built as a practical learning exercise
+        in computational sequence biology.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">sequence analysis</span>
+        <span class="project-tag">structural biology</span>
+        <span class="project-tag">AlphaFold2</span>
+        <span class="project-tag">Python</span>
+        <span class="project-tag">Perl</span>
+      </div>
+      <a class="project-link"
+         href="https://github.com/Arakunrindare/Transcription-translation"
+         target="_blank" rel="noopener">↗ View repository</a>
+    </div>
+
+    <!-- ✏️ Add more project cards below in the same format -->
+    <!-- Example placeholder:
+    <div class="project-card">
+      <div class="project-meta">Bash · R · SLURM — Institution / Year</div>
+      <h3>RNA-seq Differential Expression Pipeline</h3>
+      <p class="project-desc">...</p>
+      <div class="project-tags">
+        <span class="project-tag">RNA-seq</span>
+        <span class="project-tag">DESeq2</span>
+      </div>
+      <a class="project-link" href="#" target="_blank">↗ View repository</a>
+    </div>
+    -->
+
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section id="publications">
+    <div class="section-label">## publications</div>
+    <h2>Publications</h2>
+
+    <!-- ✏️ Replace with your real publications. Format:
+         Authors. Title. Journal. Year. DOI/link -->
+
+    <div class="pub-entry">
+      <div class="pub-title">
+        <!-- Your publication title here -->
+        [Publication title — edit this section with your work]
+      </div>
+      <div class="pub-authors">
+        Christian Abosede, et al.
+      </div>
+      <div class="pub-journal">
+        Journal · Year
+        <a class="pub-link" href="#">DOI link</a>
+      </div>
+    </div>
+
+    <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); margin-top: 1rem;">
+      <!-- Remove this paragraph once you have real publications -->
+      ✏️  Add your publications above. If none yet, replace this section
+      with a "Preprints" or "Conference Posters" section.
+    </p>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-label">## contact</div>
+    <h2>Get in touch</h2>
+    <div class="contact-grid">
+
+      <div class="contact-item">
+        <div class="contact-label">GitHub</div>
+        <a class="contact-value"
+           href="https://github.com/Arakunrindare"
+           target="_blank" rel="noopener">github.com/Arakunrindare</a>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-label">Email</div>
+        <!-- ✏️ Replace with your real email -->
+        <a class="contact-value" href="mailto:your.email@example.com">
+          your.email@example.com
+        </a>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-label">LinkedIn</div>
+        <!-- ✏️ Replace with your LinkedIn URL -->
+        <a class="contact-value" href="https://linkedin.com/in/yourprofile"
+           target="_blank" rel="noopener">linkedin.com/in/yourprofile</a>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-label">Institution</div>
+        <!-- ✏️ Replace with your institution / lab -->
+        <span class="contact-value" style="color: var(--text-dim);">
+          Your Institution / Lab
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>
+      Christian Abosede · Bioinformatician ·
+      <a href="https://github.com/Arakunrindare/christian-abosede-bio.github.io" target="_blank" rel="noopener">
+        source on GitHub
+      </a>
+    </p>
+  </footer>
+
+</body>
+</html>
